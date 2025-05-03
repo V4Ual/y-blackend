@@ -10,7 +10,7 @@ export default {
   },
   badRequest: (message) => {
     return {
-      status: true,
+      status: false,
       statusCode: 400,
       message: message,
       data: {},
@@ -20,7 +20,7 @@ export default {
 
   internalServer: (message,err) => {
     return {
-      status: true,
+      status: false,
       statusCode: 500,
       message: message,
       data: {},

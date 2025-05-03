@@ -7,19 +7,19 @@ class AuthService {
   static login = async (userObject) => {
     const { email, password } = userObject;
     const isUserExist = await db.user.findOne({ email: email });
-
+    
     if (!isUserExist || !(await isUserExist.comparePassword(password))) {
       return responses.badRequest(messages.passwordMismatch);
     }
 
     delete isUserExist._doc.password;
     const accessToken = await jwtUtil.generateToken(
-      { user: isUserExist._id },
+      { userId: isUserExist._id },
       "15min"
     );
 
     const refreshToken = await jwtUtil.generateToken(
-      { user: isUserExist._id },
+      { userId: isUserExist._id },
       "180 days"
     );
 

@@ -5,6 +5,7 @@ export const messages = {
   loginSuccess: "Login successful.",
   userDetails: "User details fetch successfully",
   channelDetails: "Channel details get successfully",
+  alredyRegisterEmail: "Already Register this email",
 
   // Authorization
   tokenNotProvided: "Authentication token not provided.",

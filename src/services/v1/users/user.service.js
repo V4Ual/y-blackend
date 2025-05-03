@@ -4,6 +4,11 @@ import responses from "../../../responses/index.js";
 
 class UserService {
   static register = async (registerData) => {
+    const isExist = await db.user.findOne({ email: registerData.email });
+
+    if (isExist) {
+      return responses.badRequest(messages.alredyRegisterEmail, {});
+    }
     const createUser = await db.user.create(registerData);
     if (createUser) {
       return responses.success(messages.registerSuccess, createUser);

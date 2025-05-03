@@ -1,10 +1,18 @@
 import { db } from "../../../config/db.config.js";
 import { messages } from "../../../constant/index.js";
 import responses from "../../../responses/index.js";
+import { Types } from "mongoose";
+const ObjectId = Types.ObjectId;
 
 class ChannelService {
   static register = async (userId, registerData) => {
-    const createUser = await db.user.updateOne({ _id: userId }, registerData);
+    console.log({ registerData, userId });
+    const createUser = await db.user.updateOne(
+      { _id: new ObjectId(userId) },
+      {
+        $set: registerData,
+      }
+    );
     if (createUser) {
       return responses.success(messages.registerSuccess, createUser);
     }

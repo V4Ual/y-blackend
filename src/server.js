@@ -6,6 +6,7 @@ import createError from "http-errors";
 import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+import cors from "cors";
 import router from "./routes/index.js";
 import responses from "./responses/index.js";
 var app = express();
@@ -14,6 +15,11 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+  })
+);
 // app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/api", router);
@@ -21,9 +27,6 @@ app.use("/api", router);
 app.use(function (req, res, next) {
   next(createError(404));
 });
-
-console.log(path.resolve("./public/hu"))
-console.log(path.join("./public/hu"))
 
 // error handler
 app.use(function (err, req, res, next) {

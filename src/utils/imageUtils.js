@@ -1,7 +1,8 @@
 import multer from "multer";
-import { writeFile } from "fs";
+import { createWriteStream } from "fs";
+import path from "path";
 
-export const imageUpload = {
+export const imageUtils = {
   uploadImage: (req, res) => {
     return multer({
       fileFilter: (req, file, cb) => {
@@ -15,7 +16,13 @@ export const imageUpload = {
     });
   },
 
-  createImage: (dirName, buffer) => {
-    const write = writeFile();
+  createImage: (dirName, buffer, imageName) => {
+    const write = createWriteStream(
+      path.resolve(`./public/${dirName}/${imageName}`)
+    );
+    write.write(buffer);
+    write.close();
   },
 };
+
+console.log(path.resolve("./public"));

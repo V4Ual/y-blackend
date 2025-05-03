@@ -1,9 +1,10 @@
 import { Router } from "express";
 import { userModule } from "../../../controllers/index.js";
-import { imageUpload } from "../../../utils/index.js";
+import { errorUtil, imageUtils } from "../../../utils/index.js";
+import { authCheck } from "../../../middleware/index.js";
 const channelRoute = Router();
 const channelCtl = new userModule.channelCtl();
-const upload = imageUpload.uploadImage();
+const upload = imageUtils.uploadImage();
 
 channelRoute.post(
   "/create",
@@ -11,12 +12,11 @@ channelRoute.post(
     { name: "banner", maxCount: "1" },
     { name: "profilePic", maxCount: "1" },
   ]),
-  async (req, res) => {
-    // console.log(req.files)
-    // channelCtl.register
-    // const result = await authCtl.login(req, res);
-    // return res.status(result.statusCode).send(result);
-  }
+  errorUtil(authCheck),
+  errorUtil (async (req, res) => {
+    const result = await channelCtl.register(req, res);
+    return res.status(result.statusCode).send(result);
+  })
 );
 
 export { channelRoute };

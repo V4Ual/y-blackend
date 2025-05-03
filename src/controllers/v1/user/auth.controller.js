@@ -14,10 +14,13 @@ class AuthController {
     };
 
     const result = await this.#authService.login(prepareData);
-    res.cookie("access_token", result.data._doc.access_token, {
-      maxAge: 3600000,
-      httpOnly: true,
-    }); // expires in 1 hour
+
+    if (result.statusCode === 200) {
+      res.cookie("access_token", result.data._doc.access_token, {
+        maxAge: 3600000,
+        httpOnly: true,
+      }); 
+    }
 
     return result;
   };
