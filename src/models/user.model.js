@@ -1,5 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 import { bcryptUtil } from "../utils/index.js";
+import { envConfig } from "../constant/env.variable.js";
 
 const userScheme = new Schema(
   {
@@ -28,6 +29,10 @@ const userScheme = new Schema(
     channel_image: {
       type: String,
       default: "N/A",
+      get(value) {
+        if (!value || value === "N/A") return value;
+        return envConfig.IMAGE_URL + "profileImage/" + value;
+      },
     },
     banner_image: {
       type: String,
@@ -51,6 +56,8 @@ userScheme.pre("save", async function (next) {
   this.password = await bcryptUtil.hasPassword(this.password);
   next();
 });
+
+userScheme.set("toJSON", { getters: true });
 
 userScheme.methods.comparePassword = async function (candidatePassword) {
   return await bcryptUtil.comparePassword(candidatePassword, this.password);

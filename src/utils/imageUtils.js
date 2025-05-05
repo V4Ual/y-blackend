@@ -1,6 +1,7 @@
 import multer from "multer";
 import { createWriteStream } from "fs";
 import path from "path";
+import fs from "fs";
 
 export const imageUtils = {
   uploadImage: (req, res) => {
@@ -17,11 +18,14 @@ export const imageUtils = {
   },
 
   createImage: (dirName, buffer, imageName) => {
-    const write = createWriteStream(
-      path.resolve(`./public/${dirName}/${imageName}`)
-    );
+    const dirPath = path.resolve(`./public/${dirName}`);
+
+    if (!fs.existsSync(dirPath)) {
+      fs.mkdirSync(dirPath, { recursive: true });
+    }
+    const write = createWriteStream(path.resolve(dirPath, imageName));
     write.write(buffer);
-    write.close();
+    write.end();
   },
 };
 
