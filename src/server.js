@@ -17,10 +17,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "http://192.168.255.86:5173",
   })
 );
-// app.use(express.static(path.join(__dirname, "public")));
+
+app.use("/public", express.static(path.join(__dirname, "../public")));
 
 app.use("/api", router);
 

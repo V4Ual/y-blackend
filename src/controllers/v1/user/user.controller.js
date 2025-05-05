@@ -21,7 +21,6 @@ class userController {
 
   details = async (req, res) => {
     const { userId } = req.headers;
-
     const result = await this.#userService.userDetails({ userId });
     console.log(result)
     return result;

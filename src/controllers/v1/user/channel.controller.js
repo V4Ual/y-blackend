@@ -17,24 +17,13 @@ class channelController {
     const prepareData = new Object();
     prepareData.channel_name = channelName;
     prepareData.description = description;
+    prepareData.is_channel = true;
 
-    if (files?.banner?.length > 0) {
-      let imageName = commonUtils.generateImageName();
-      imageUtils.createImage("banner", files.banner[0].buffer, imageName);
-      prepareData.banner_image = imageName;
-    }
-
-    if (files?.profilePic?.length > 0) {
-      let imageName = commonUtils.generateImageName();
-      imageUtils.createImage(
-        "profileImage",
-        files.profilePic[0].buffer,
-        imageName
-      );
-      prepareData.channel_image = imageName;
-    }
-
-    const result = await this.#channelService.register(userId, prepareData);
+    const result = await this.#channelService.register(
+      userId,
+      prepareData,
+      files
+    );
     return result;
   };
 }
