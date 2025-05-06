@@ -15,7 +15,8 @@ mongoose
 
 // models
 
-import { user } from "../models/index.js";
+import { user, video } from "../models/index.js";
 export const db = {
   user,
+  video,
 };

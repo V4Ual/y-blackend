@@ -7,7 +7,7 @@ export const imageUtils = {
   uploadImage: (req, res) => {
     return multer({
       fileFilter: (req, file, cb) => {
-        const allowFileType = ["image/jpeg", "image/png"];
+        const allowFileType = ["image/jpeg", "image/png", "video/mp4"];
         if (allowFileType.includes(file.mimetype)) {
           cb(null, true);
         } else {
@@ -18,6 +18,7 @@ export const imageUtils = {
   },
 
   createImage: (dirName, buffer, imageName) => {
+    console.log({dirName,imageName})
     const dirPath = path.resolve(`./public/${dirName}`);
 
     if (!fs.existsSync(dirPath)) {

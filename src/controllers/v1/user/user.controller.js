@@ -2,7 +2,7 @@ import { messages } from "../../../constant/index.js";
 import responses from "../../../responses/index.js";
 import { userService } from "../../../services/index.js";
 
-class userController {
+class UserController {
   #userService;
   constructor() {
     this.#userService = userService.userService.userService;
@@ -27,4 +27,4 @@ class userController {
   };
 }
 
-export default userController;
+export default UserController;
