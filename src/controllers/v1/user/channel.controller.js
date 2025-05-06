@@ -1,7 +1,7 @@
 import { userService } from "../../../services/index.js";
 import { commonUtils, imageUtils } from "../../../utils/index.js";
 
-class channelController {
+class ChannelController {
   #channelService;
   constructor() {
     this.#channelService = userService.userService.channelService;
@@ -28,4 +28,4 @@ class channelController {
   };
 }
 
-export default channelController;
+export default ChannelController;

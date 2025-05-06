@@ -20,16 +20,33 @@ const bearerToken = async (req) => {
     message = messages.tokenInvalid;
   }
 
-  const decodeData = await jwtUtil.verity(token);
-  req.headers.userDetails = decodeData;
-  return {
-    isValid: true,
-    message: message.tokenValid,
-  };
+  const decodeData = await jwtUtil
+    .verity(token)
+    .then((value) => {
+      req.headers.userDetails = value;
+      return {
+        isValid: true,
+        message: message.tokenValid,
+      };
+    })
+    .catch((error) => {
+      return {
+        isValid: false,
+        message: error.message,
+        isExpire: true,
+      };
+    });
+
+  return decodeData;
 };
 
 export const authCheck = async (req, res, next) => {
   const isTokenVerify = await bearerToken(req);
+
+  if (isTokenVerify?.isExpire) {
+    return res.status(498).send(responses.invalidToken(isTokenVerify.message));
+  }
+
   if (isTokenVerify.isValid) {
     next();
   } else {

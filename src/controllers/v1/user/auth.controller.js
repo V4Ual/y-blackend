@@ -16,12 +16,21 @@ class AuthController {
     const result = await this.#authService.login(prepareData);
 
     if (result.statusCode === 200) {
-      res.cookie("access_token", result.data._doc.access_token, {
-        maxAge: 3600000,
+      res.cookie("refresh_token", result.data._doc.refresh_token, {
         httpOnly: true,
-      }); 
+        secure: false,
+        sameSite: "Lax",
+        // path: "/refresh",
+      });
     }
 
+    return result;
+  };
+
+  refreshToken = async (req, res) => {
+    const refreshToken = req.cookies.refresh_token;
+
+    const result = await this.#authService.refreshTokenCheck(refreshToken);
     return result;
   };
 }
