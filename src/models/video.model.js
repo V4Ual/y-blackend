@@ -19,16 +19,21 @@ const videoSchema = new Schema(
       default: "N/A",
       get(value) {
         if (!value || value === "N/A") return value;
-        return `${envConfig.IMAGE_URL}videos/${this.video_id}/thumbnail.png`;
+        if (value) {
+          return `${envConfig.IMAGE_URL}videos/${this.video_id}/${value}`;
+        } else {
+          return `${envConfig.IMAGE_URL}videos/${this.video_id}/thumbnail.png`;
+        }
       },
     },
     views: {
       type: String,
       default: "0",
     },
-    subscriber: {
+    status: {
       type: String,
-      default: "0",
+      default: "Processing",
+      enum: ["Live", "Processing", "Failed"],
     },
     duration: {
       type: String,

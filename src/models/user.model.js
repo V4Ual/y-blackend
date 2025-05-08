@@ -38,6 +38,10 @@ const userScheme = new Schema(
       type: String,
       default: "N/A",
     },
+    subscriber: {
+      type: String,
+      default: "0",
+    },
     created_at: {
       type: Date,
       default: Date.now(),

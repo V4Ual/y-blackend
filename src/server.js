@@ -9,6 +9,9 @@ const __dirname = dirname(__filename);
 import cors from "cors";
 import router from "./routes/index.js";
 import responses from "./responses/index.js";
+import fs from "fs";
+
+import("./queue/index.js");
 var app = express();
 app.use(logger("dev"));
 app.use(
@@ -39,3 +42,17 @@ app.use(function (err, req, res, next) {
 });
 
 export default app;
+
+// export function updateMasterPlaylist(masterPath, videoId) {
+//   const basePath = `/public/videos/${videoId}`;
+//   const content = fs.readFileSync(masterPath, "utf-8");
+
+//   const updated = content.replace(
+//     /^\s*\/?stream_(\d+)\.m3u8\s*$/gm,
+//     (_, num) => `${basePath}/stream_${num}.m3u8`
+//   );
+
+//   fs.writeFileSync(masterPath, updated, "utf-8");
+// }
+
+
