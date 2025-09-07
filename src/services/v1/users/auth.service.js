@@ -15,12 +15,12 @@ class AuthService {
     delete isUserExist._doc.password;
     const accessToken = await jwtUtil.generateToken(
       { userId: isUserExist._id },
-      "30s"
+      "10s"
     );
 
     const refreshToken = await jwtUtil.generateToken(
       { userId: isUserExist._id },
-      "180 days"
+      "180d"
     );
 
     await isUserExist.setToken(accessToken, refreshToken);

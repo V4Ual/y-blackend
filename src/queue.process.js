@@ -10,23 +10,27 @@ import { sendToClient } from "./webSocket/index.js";
 import { commonUtils } from "./utils/commonUtils.js";
 import { db } from "./config/db.config.js";
 
-async function receiveMessages() {
+export async function receiveMessages() {
   try {
+    console.log(
+      "--------------------------------------------------------------------------------------------------------"
+    );
     const connection = await checkRabbitMQConnection();
 
     const channel = await connection.createChannel();
 
     const queue = "videoProcess";
     await channel.purgeQueue(queue);
-    await channel.assertQueue(queue, {
-      durable: false,
-    });
+    // await channel.assertQueue(queue, {
+    //   durable: false,
+    // });
 
     console.log(
       `[*] Waiting for messages in queue: "${queue}". To exit press CTRL+C`
     );
 
     channel.consume(queue, (msg) => {
+      console.log({ msg });
       if (msg !== null) {
         console.log(`[x] Received: ${msg.content}`);
         const videoData = JSON.parse(msg.content.toString());
@@ -161,11 +165,21 @@ async function receiveMessages() {
 
               const thumbnailProcess = spawn("ffmpeg", thumbnailArgs);
 
+              console.log(
+                "=========================>>>>>>>>>>>>>",
+                thumbnailProcess
+              );
               const timeOfVideo = commonUtils.convertSecondsToHHMMSS(duration);
 
               await db.video.updateOne(
                 { video_id: videoData.videoId },
-                { $set: { duration: timeOfVideo, status: "Live" } }
+                {
+                  $set: {
+                    duration: timeOfVideo,
+                    status: "Live",
+                    thumbnail: "thumbnail.png",
+                  },
+                }
               );
 
               updateMasterPlaylist(masterPath, videoData.videoId);
@@ -196,6 +210,7 @@ async function receiveMessages() {
         }
 
         channel.ack(msg);
+        channel.close();
       }
     });
   } catch (error) {

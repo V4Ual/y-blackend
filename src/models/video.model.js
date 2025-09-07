@@ -4,7 +4,7 @@ import { envConfig } from "../constant/env.variable.js";
 
 const videoSchema = new Schema(
   {
-    user_id: mongoose.Types.ObjectId,
+    user_id: { type: mongoose.Types.ObjectId, ref: "users" },
     title: {
       type: String,
       default: "N/A",
@@ -47,9 +47,17 @@ const videoSchema = new Schema(
       type: String,
       default: "N/A",
     },
+    created_at: {
+      type: Date,
+      default: Date.now(),
+    },
+    updated_at: {
+      type: Date,
+      default: Date.now(),
+    },
   },
   {
-    timestamps: true,
+    timestamps: false,
   }
 );
 
