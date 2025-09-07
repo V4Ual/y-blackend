@@ -18,9 +18,10 @@ class AuthController {
     if (result.statusCode === 200) {
       res.cookie("refresh_token", result.data._doc.refresh_token, {
         httpOnly: true,
-        secure: false,
+        secure: false, //
         sameSite: "Lax",
-        // path: "/refresh",
+        path: "/",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
       });
     }
 

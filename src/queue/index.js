@@ -3,8 +3,9 @@ let connection;
 export const checkRabbitMQConnection = async () => {
   try {
     if (!connection) {
-      connection = await amqp.connect("amqp://localhost");
+      connection = await amqp.connect("amqp://vishal:test@localhost");
     }
+    console.log("Connection successfully");
     return connection;
   } catch (error) {
     console.error("Failed to connect to RabbitMQ:", error.message);
@@ -28,7 +29,7 @@ export const sendVideoInProcess = async ({
     durable: false,
   });
 
-  channel.sendToQueue(
+  await channel.sendToQueue(
     queue,
     Buffer.from(
       JSON.stringify({
@@ -40,6 +41,4 @@ export const sendVideoInProcess = async ({
       })
     )
   );
-
-  await channel.close();
 };

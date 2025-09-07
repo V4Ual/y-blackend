@@ -9,15 +9,16 @@ const __dirname = dirname(__filename);
 import cors from "cors";
 import router from "./routes/index.js";
 import responses from "./responses/index.js";
-import fs from "fs";
+import { checkRabbitMQConnection } from "./queue/index.js";
+import { receiveMessages } from "./queue.process.js";
 
-import("./queue/index.js");
+// import("./queue/index.js");
 var app = express();
 app.use(logger("dev"));
 app.use(
   cors({
-    origin: ["http://192.168.33.86:5173", "http://127.0.0.1:5500"],
-    credentials: true,
+    origin: ["http://localhost:5173", "http://10.149.6.86:5173"], // ✅ NOT "*"
+    credentials: true, // ✅ Required to allow cookies
   })
 );
 
@@ -41,18 +42,7 @@ app.use(function (err, req, res, next) {
     .send(responses.internalServer("Something Went worng", errorMessage));
 });
 
+checkRabbitMQConnection()
+
 export default app;
-
-// export function updateMasterPlaylist(masterPath, videoId) {
-//   const basePath = `/public/videos/${videoId}`;
-//   const content = fs.readFileSync(masterPath, "utf-8");
-
-//   const updated = content.replace(
-//     /^\s*\/?stream_(\d+)\.m3u8\s*$/gm,
-//     (_, num) => `${basePath}/stream_${num}.m3u8`
-//   );
-
-//   fs.writeFileSync(masterPath, updated, "utf-8");
-// }
-
 

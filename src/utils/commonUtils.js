@@ -42,7 +42,7 @@ export const commonUtils = {
     const minutes = Math.floor((seconds % 3600) / 60);
     const remainingSeconds = Math.floor(seconds % 60);
 
-    const formattedTime = [  
+    const formattedTime = [
       hours.toString().padStart(2, "0"),
       minutes.toString().padStart(2, "0"),
       remainingSeconds.toString().padStart(2, "0"),

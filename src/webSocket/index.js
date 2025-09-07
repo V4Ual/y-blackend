@@ -1,6 +1,10 @@
 import { WebSocketServer } from "ws";
 
-const wss = new WebSocketServer({ port: 3002 });
+const wss = new WebSocketServer({ port: 3004 });
+
+wss.on("connection", () => {
+  console.log("ws connection");
+});
 
 const clients = new Map();
 
@@ -20,6 +24,15 @@ wss.on("connection", function connection(ws, req) {
 });
 
 export function sendToClient(clientId, message) {
+  const client = clients.get(clientId);
+
+  if (client && client.readyState === WebSocket.OPEN) {
+    client.send(message);
+  }
+}
+
+export function sentToClientProcess(clientId, message) {
+
   const client = clients.get(clientId);
 
   if (client && client.readyState === WebSocket.OPEN) {

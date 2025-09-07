@@ -8,7 +8,7 @@ authRoute.post("/login", async (req, res) => {
   return res.status(result.statusCode).send(result);
 });
 
-authRoute.post("/refresh", async (req, res) => {
+authRoute.get("/refresh", async (req, res) => {
   const result = await authCtl.refreshToken(req, res);
   return res.status(result.statusCode).send(result);
 });

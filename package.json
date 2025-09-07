@@ -2,10 +2,9 @@
   "name": "backend",
   "version": "0.0.0",
   "private": true,
-  "type": "module",
   "scripts": {
     "start": "nodemon --env-file=.env ./bin/www",
-    "start-queue": "nodemon --env-file=.env ./src/queue.process.js"
+    "start:queue": "nodemon --env-file=.env ./src/queue.process.js"
   },
   "dependencies": {
     "amqplib": "^0.10.8",
